@@ -7,7 +7,7 @@ from typing import Any, Mapping, TypeVar, Union
 
 
 T = TypeVar("T", str, bytes)
-def safely_get_value(dct: Mapping, key: Any, default: Union[T, None]):
+def safely_get_value(dct: Mapping, key: Any, default: None):
     """Function to return a value from a dictionary using its key"""
     if key in dct:
         return dct[key]

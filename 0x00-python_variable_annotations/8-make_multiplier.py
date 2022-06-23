@@ -8,5 +8,5 @@ from typing import Callable
 
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
     def multiplier_callback(num: float) -> float:
-        return multiplier * num
+        return float(multiplier * num)
     return(multiplier_callback)

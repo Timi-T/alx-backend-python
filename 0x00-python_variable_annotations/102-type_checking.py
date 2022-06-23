@@ -2,7 +2,7 @@
 """
 Apply necessary changes to code
 """
-from typing import Tuple, List, Any
+from typing import Tuple, List
 
 
 def zoom_array(lst: Tuple, factor: int = 2) -> List:

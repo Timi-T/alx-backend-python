@@ -7,6 +7,8 @@ from typing import Callable
 
 
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
+    """Function to return a function using argument as parameter"""
     def multiplier_callback(num: float) -> float:
-        return float(multiplier * num)
+        """Callback function to be returned"""
+        return multiplier * num
     return(multiplier_callback)

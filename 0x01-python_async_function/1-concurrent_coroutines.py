@@ -3,8 +3,12 @@
 Module to get a list from an asynchronous function
 """
 
-import asyncio
 wait_random = __import__('0-basic_async_syntax').wait_random
+
+
+async def sort_list(my_list: list) -> list:
+    """Function to asyncronously sort a list"""
+    my_list.sort()
 
 
 async def wait_n(n: int, max_delay: int) -> list[float]:
@@ -12,12 +16,7 @@ async def wait_n(n: int, max_delay: int) -> list[float]:
     ret_list = []
     for i in range(n):
         val = await wait_random(max_delay)
+        print("appending")
         ret_list.append(val)
-        j = i
-        while j != 0:
-            if ret_list[j] < ret_list[j - 1]:
-                temp = ret_list[j]
-                ret_list[j] = ret_list[j - 1]
-                ret_list[j - 1] = temp
-            j -= 1
+        await sort_list(ret_list)
     return ret_list

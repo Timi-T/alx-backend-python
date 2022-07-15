@@ -8,6 +8,7 @@ from parameterized import parameterized
 import unittest
 from unittest import mock
 from unittest.mock import PropertyMock, patch
+import utils
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -26,10 +27,23 @@ class TestGithubOrgClient(unittest.TestCase):
                                                 ORG_URL.format(org=org))
 
     def test_public_repos_url(self):
-        """Test pubic repos method"""
+        """Test _public_repos_url method"""
         with mock.patch('client.GithubOrgClient.org',
                         new_callable=PropertyMock) as mock_method:
             test_client = client.GithubOrgClient("ope")
             ret = {"repos_url": "Payload"}
             mock_method.return_value = ret
             self.assertEqual(test_client._public_repos_url, ret["repos_url"])
+
+    @patch('client.get_json', return_value=[{"name": "PL1"},
+           {"name": "PL2"}, {"name": "PL3"}])
+    def test_public_repos(self, payloads):
+        """Test public_repos method"""
+        with mock.patch('client.GithubOrgClient._public_repos_url',
+                        new_callable=PropertyMock) as mock_method:
+            mock_method.return_value = payloads
+            test_client = client.GithubOrgClient("ope")
+            self.assertEqual(test_client.public_repos(None),
+                             [repo['name'] for repo in payloads.return_value])
+            mock_method.assert_called_once()
+            client.get_json.assert_called_once()

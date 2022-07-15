@@ -4,8 +4,6 @@ Parameterize a unit test
 """
 
 
-from inspect import Attribute
-from operator import methodcaller
 from typing import Mapping, Sequence, Union
 from parameterized import parameterized
 import unittest
@@ -73,13 +71,7 @@ class TestMemoize(unittest.TestCase):
         def a_property(self):
             return self.a_method()
     TClass = TestClass
-    test = TestClass()
-
-    @parameterized.expand([
-        (test, ),
-        (test, )
-    ])
-    def test_memoize(self, test):
+    def test_memoize(self):
         """Test a memoizing wrapper"""
 
         with mock.patch('test_utils.TestMemoize.TClass.a_method',

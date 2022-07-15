@@ -71,6 +71,7 @@ class TestMemoize(unittest.TestCase):
         def a_property(self):
             return self.a_method()
     TClass = TestClass
+
     def test_memoize(self):
         """Test a memoizing wrapper"""
 

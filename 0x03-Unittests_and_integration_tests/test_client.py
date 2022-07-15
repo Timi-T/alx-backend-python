@@ -5,6 +5,7 @@ Module to test Client module
 
 import unittest
 from unittest import mock
+from unittest.mock import patch
 import client
 from parameterized import parameterized
 
@@ -16,10 +17,10 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google", ),
         ("abc")
     ])
-    def test_org(self, org):
+    @patch('client.get_json', return_value=1)
+    def test_org(self, org, return_value):
         """Test the org method"""
-        with mock.patch('client.get_json', return_value=org) as mock_method:
-            test_client = client.GithubOrgClient(org)
-            self.assertEqual(test_client.org, org)
-            mock_method.assert_called_once_with(client.GithubOrgClient.
+        test_client = client.GithubOrgClient(org)
+        self.assertEqual(test_client.org, 1)
+        client.get_json.assert_called_once_with(client.GithubOrgClient.
                                                 ORG_URL.format(org=org))

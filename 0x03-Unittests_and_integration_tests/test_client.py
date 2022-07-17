@@ -46,6 +46,7 @@ class TestGithubOrgClient(unittest.TestCase):
                              [repo['name'] for repo in payloads.return_value])
             mock_method.assert_called_once()
             payloads.assert_called_once()
+            client.get_json.assert_called_once()
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),

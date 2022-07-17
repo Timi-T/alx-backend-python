@@ -60,20 +60,24 @@ class TestGithubOrgClient(unittest.TestCase):
 
 
 @parameterized_class([
-    {"org_payload": fixtures.TEST_PAYLOAD[0][0]},
-    {"repos_payload": fixtures.TEST_PAYLOAD[0][1]},
-    {"expected_repos": fixtures.TEST_PAYLOAD[0][2]},
-    {"apache2_repos": fixtures.TEST_PAYLOAD[0][3]}
-], )
+    {"payload": fixtures.TEST_PAYLOAD[0]}
+])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Class For integeration tests"""
 
     @classmethod
     def setUpClass(cls):
         """Setup method for class"""
-        cls.get_patcher = mock.patch('requests.get.json',
+        pl = fixtures.TEST_PAYLOAD[0]
+        cls.get_patcher = mock.patch('requests.get', return_value=pl[0],
                                      side_effect=None)
         cls.get_patcher.start()
+
+    def test_public_repos(self):
+        """Test public_repos method"""
+        test_client = client.GithubOrgClient("ope")
+        self.assertEqual(test_client.public_repos(),
+                         [repo for repo in fixtures.TEST_PAYLOAD[0][2]])
 
     @classmethod
     def tearDownClass(cls):

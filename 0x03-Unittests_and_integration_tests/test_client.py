@@ -70,8 +70,3 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             cls.get_patcher = mock.patch('requests.get.json',
                                          side_effect=fixtures.TEST_PAYLOAD)
             cls.get_patcher.start()
-
-    @classmethod
-    def tearDownClass(cls):
-        """Teardown method for class"""
-        cls.get_patcher.stop()

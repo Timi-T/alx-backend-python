@@ -18,7 +18,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google", ),
         ("abc", )
     ])
-    @patch('client.get_json', return_value=1)
+    @patch('client.get_json', return_value="ok")
     def test_org(self, org, mock_object):
         """Test the org method"""
         test_client = client.GithubOrgClient(org)

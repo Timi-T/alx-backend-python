@@ -4,7 +4,8 @@ Module to test Client module
 """
 
 import client
-from parameterized import parameterized
+import fixtures
+from parameterized import parameterized, parameterized_class
 import unittest
 from unittest import mock
 from unittest.mock import PropertyMock, patch
@@ -15,15 +16,15 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @parameterized.expand([
         ("google", ),
-        ("abc")
+        ("abc", )
     ])
     @patch('client.get_json', return_value=1)
     def test_org(self, org, mock_object):
         """Test the org method"""
         test_client = client.GithubOrgClient(org)
         self.assertEqual(test_client.org, mock_object.return_value)
-        client.get_json.assert_called_once_with(client.GithubOrgClient.
-                                                ORG_URL.format(org=org))
+        mock_object.assert_called_once_with(client.GithubOrgClient.
+                                            ORG_URL.format(org=org))
 
     def test_public_repos_url(self):
         """Test _public_repos_url method"""
@@ -53,4 +54,5 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_has_license(self, license, key, expected):
         """Test has_license method"""
         test_client = client.GithubOrgClient("ope")
-        self.assertEqual(test_client.has_license(license, key), expected)
+        self.assertEqual(test_client.has_license
+                         (repo=license, license_key=key), expected)

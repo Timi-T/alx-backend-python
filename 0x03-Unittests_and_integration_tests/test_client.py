@@ -71,11 +71,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Setup method for class"""
-        pl = fixtures.TEST_PAYLOAD
-        with patch('requests.get', return_value=pl[0][1]) as m:
-            cls.get_patcher = mock.patch('requests.get.json',
-                                         side_effect=None)
-            cls.get_patcher.start()
+        cls.get_patcher = mock.patch('requests.get.json',
+                                     side_effect=None)
+        cls.get_patcher.start()
 
     @classmethod
     def tearDownClass(cls):

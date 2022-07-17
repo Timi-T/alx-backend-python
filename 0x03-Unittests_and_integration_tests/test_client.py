@@ -59,6 +59,12 @@ class TestGithubOrgClient(unittest.TestCase):
                          (repo=license, license_key=key), expected)
 
 
+@parameterized_class([
+    {"org_payload": fixtures.TEST_PAYLOAD[0][0]},
+    {"repos_payload": fixtures.TEST_PAYLOAD[0][1]},
+    {"expected_repos": fixtures.TEST_PAYLOAD[0][2]},
+    {"apache2_repos": fixtures.TEST_PAYLOAD[0][3]}
+], )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Class For integeration tests"""
 
@@ -68,5 +74,10 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         pl = fixtures.TEST_PAYLOAD
         with patch('requests.get', return_value=pl[0][1]) as m:
             cls.get_patcher = mock.patch('requests.get.json',
-                                         side_effect=fixtures.TEST_PAYLOAD)
+                                         side_effect=None)
             cls.get_patcher.start()
+
+    @classmethod
+    def tearDownClass(cls):
+        """Teardown method for class"""
+        cls.get_patcher.stop()

@@ -75,7 +75,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             cls.get_patcher = mock.patch('requests.get.json',
                                          side_effect=fixtures.TEST_PAYLOAD[0][1][0])
             cls.get_patcher.start()
-            print(fixtures.TEST_PAYLOAD[0][1][0])
 
     @classmethod
     def tearDownClass(cls):

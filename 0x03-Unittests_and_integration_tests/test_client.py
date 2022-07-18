@@ -72,17 +72,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Setup method for class"""
-
-        class ret:
-            """Mock class to contain json method"""
-            def __init__(self):
-                """Constructor method"""
-                self.org_payload = cls.__dict__.get('org_payload')
-
-            def json(self):
-                """Json method"""
-                return cls.__dict__.get('repos_payload')
-
         cls.get_patcher = patch('requests.get',
                                 return_value=cls.__dict__.get('org_payload'))
         cls.get_patcher.start()

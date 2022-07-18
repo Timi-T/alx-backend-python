@@ -9,6 +9,7 @@ from parameterized import parameterized, parameterized_class
 import unittest
 from unittest import mock
 from unittest.mock import MagicMock, PropertyMock, patch
+from typing import Any
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -19,7 +20,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("abc", )
     ])
     @patch('client.get_json', return_value="ok")
-    def test_org(self, org: str, mock_object):
+    def test_org(self, org: str, mock_object: Any):
         """Test the org method"""
         test_client = client.GithubOrgClient(org)
         self.assertEqual(test_client.org, mock_object.return_value)

@@ -20,7 +20,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("abc", )
     ])
     @patch('client.get_json', return_value="ok")
-    def test_org(self, org: str, mock_object: Any):
+    def test_org(self, org: str, mock_object: MagicMock):
         """Test the org method"""
         test_client = client.GithubOrgClient(org)
         self.assertEqual(test_client.org, mock_object.return_value)
@@ -38,7 +38,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @patch('client.get_json', return_value=[{"name": "PL1"},
            {"name": "PL2", "license": "ok"}, {"name": "PL3"}])
-    def test_public_repos(self, payloads):
+    def test_public_repos(self, payloads: MagicMock):
         """Test public_repos method"""
         with mock.patch('client.GithubOrgClient._public_repos_url',
                         new_callable=PropertyMock) as mock_method:

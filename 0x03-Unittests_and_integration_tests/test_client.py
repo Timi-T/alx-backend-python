@@ -8,7 +8,7 @@ import fixtures
 from parameterized import parameterized, parameterized_class
 import unittest
 from unittest import mock
-from unittest.mock import PropertyMock, patch
+from unittest.mock import MagicMock, PropertyMock, patch
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("abc", )
     ])
     @patch('client.get_json', return_value="ok")
-    def test_org(self, org, mock_object):
+    def test_org(self, org: str, mock_object):
         """Test the org method"""
         test_client = client.GithubOrgClient(org)
         self.assertEqual(test_client.org, mock_object.return_value)
@@ -71,9 +71,19 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Setup method for class"""
-        pl = fixtures.TEST_PAYLOAD[0]
-        cls.get_patcher = mock.patch('requests.get', return_value=pl[0],
-                                     side_effect=None)
+
+        class ret:
+            """Mock class to contain json method"""
+            def __init__(self):
+                """Constructor method"""
+                self.org_payload = cls.__dict__.get('org_payload')
+
+            def json(self):
+                """Json method"""
+                return cls.__dict__.get('repos_payload')
+
+        cls.get_patcher = patch('requests.get',
+                                return_value=cls.__dict__.get('org_payload'))
         cls.get_patcher.start()
 
     def test_public_repos(self):

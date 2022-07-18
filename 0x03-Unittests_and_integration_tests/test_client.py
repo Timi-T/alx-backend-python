@@ -8,7 +8,7 @@ import fixtures
 from parameterized import parameterized, parameterized_class
 import unittest
 from unittest import mock
-from unittest.mock import MagicMock, PropertyMock, patch
+from unittest.mock import MagicMock, Mock, PropertyMock, patch
 from typing import Any
 
 
@@ -53,10 +53,11 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False)
     ])
-    def test_has_license(self, l, k, e):
+    def test_has_license(self, lisc, key, ret):
         """Test has_license method"""
         test_client = client.GithubOrgClient("ope")
-        self.assertEqual(test_client.has_license(repo=l, license_key=k), e)
+        self.assertEqual(test_client.has_license(repo=lisc, license_key=key),
+                         ret)
 
 
 @parameterized_class([
@@ -71,8 +72,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Setup method for class"""
-        cls.get_patcher = patch('requests.get',
-                                return_value=cls.__dict__.get('org_payload'))
+        cls.get_patcher = patch('requests.get')
+        cls.get_patcher.return_value = cls.__dict__.get('org_payload')
         cls.get_patcher.start()
 
     def test_public_repos(self):
